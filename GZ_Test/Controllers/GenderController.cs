@@ -9,10 +9,12 @@ namespace GZ_Test.Controllers
     public class GenderController : ControllerBase
     {
         private readonly IRepository<Gender> _repository;
+        private readonly ILogger<GenderController> _logger;
 
-        public GenderController(IRepository<Gender> repository)
+        public GenderController(IRepository<Gender> repository, ILogger<GenderController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -29,6 +31,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -47,6 +51,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -61,6 +67,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -79,6 +87,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -98,6 +108,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }

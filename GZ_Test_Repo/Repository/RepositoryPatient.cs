@@ -31,9 +31,9 @@ namespace GZ_Test_Repo.Repository
         private void CheckIsValid(Patient entity)
         {
             if (entity.AreaId < -1 || !_context.Areas.Any(a => a.Id == entity.AreaId))
-                throw new DbUpdateException();
+                throw new DbUpdateException("Incorrect AreaId");
             if (entity.GenderId < -1 || !_context.Genders.Any(g => g.Id == entity.GenderId))
-                throw new DbUpdateException();
+                throw new DbUpdateException("Incorrect GenderId");
         }
     }
 }

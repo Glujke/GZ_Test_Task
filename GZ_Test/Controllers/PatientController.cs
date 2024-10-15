@@ -9,10 +9,12 @@ namespace GZ_Test.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IRepository<Patient> _repository;
+        private readonly ILogger<PatientController> _logger;
 
-        public PatientController(IRepository<Patient> repository)
+        public PatientController(IRepository<Patient> repository, ILogger<PatientController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -29,6 +31,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -47,6 +51,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -65,6 +71,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -87,6 +95,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -106,6 +116,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }

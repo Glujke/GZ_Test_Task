@@ -10,10 +10,12 @@ namespace GZ_Test.Controllers
     public class SpecializationController : ControllerBase
     {
         private readonly IRepository<Specialization> _repository;
+        private readonly ILogger<SpecializationController> _logger;
 
-        public SpecializationController(IRepository<Specialization> repository)
+        public SpecializationController(IRepository<Specialization> repository, ILogger<SpecializationController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -30,6 +32,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -48,6 +52,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -62,6 +68,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -80,6 +88,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }
@@ -99,6 +109,8 @@ namespace GZ_Test.Controllers
             }
             catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
+                _logger?.LogError(ex.StackTrace);
                 return StatusCode(500);
             }
         }

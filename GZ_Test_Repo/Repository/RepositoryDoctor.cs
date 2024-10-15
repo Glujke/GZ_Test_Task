@@ -38,11 +38,11 @@ namespace GZ_Test_Repo.Repository
         private void CheckIsValid(Doctor entity)
         {
             if (entity.AreaId < -1 || !_context.Areas.Any(a => a.Id == entity.AreaId))
-                throw new DbUpdateException();
+                throw new DbUpdateException("Incorrect AreaId");
             if (entity.SpecializationId < -1 || !_context.Specializations.Any(s => s.Id == entity.SpecializationId))
-                throw new DbUpdateException();
+                throw new DbUpdateException("Incorrect SpecializationId");
             if (entity.CabinetId < -1 || !_context.Cabinetes.Any(c => c.Id == entity.CabinetId))
-                throw new DbUpdateException();
+                throw new DbUpdateException("Incorrect CabinetId");
         }
     }
 }
