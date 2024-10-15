@@ -1,0 +1,77 @@
+﻿<Window x:Class="GZ_Test_WPF_Application.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GZ_Test_WPF_Application"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="165*" />
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="178*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.2*" />
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Column="0" ItemsSource="{Binding Doctors}"
+                 SelectedItem="{Binding SelectedDoctor}" Grid.ColumnSpan="2" Margin="0,0,0,72" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock FontSize="18" Text="{Binding Path=Surname}" />
+                        <TextBlock Text="{Binding Path=Name}" />
+                        <TextBlock Text="{Binding Path=Father}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,18,0,0">
+            <Button Command="{Binding AddCommand}">+</Button>
+            <Button Command="{Binding RemoveCommand}"
+                    CommandParameter="{Binding SelectedDoctor}">-</Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" DataContext="{Binding SelectedDoctor}" Margin="0,0,0,54" Grid.RowSpan="2">
+            <TextBlock Text="Выбранный врач"  />
+            <TextBlock Text="Фамилия" />
+            <TextBox Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Имя" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="Отчество" />
+            <TextBox Text="{Binding Father, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="Специализация" />
+            <ComboBox x:Name="comboBoxSpecs" DisplayMemberPath="Name"
+              SelectedItem="{Binding Specialization, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            </ComboBox>
+            <TextBlock Text="Участок" />
+            <ComboBox  x:Name="comboBoxAreas" DisplayMemberPath="Number" 
+              SelectedItem="{Binding Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <TextBlock Text="Кабинет" />
+            <ComboBox  x:Name="comboBoxCabinet" DisplayMemberPath="Number" 
+              SelectedItem="{Binding Cabinet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,0,0" Grid.Column="2">
+            <Button Command="{Binding ApplyAddCommand}" IsEnabled="{Binding IsAddButtonEnabled}"
+                    CommandParameter="{Binding SelectedDoctor}" Width="163">Добавить как нового</Button>
+            <Button Command="{Binding ApplyChangesCommand}" IsEnabled="{Binding IsEditButtonEnabled}"
+                    CommandParameter="{Binding SelectedDoctor}" Width="163">Сохранить изменения</Button>
+        </StackPanel>
+    </Grid>
+</Window>

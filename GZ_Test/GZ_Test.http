@@ -1,0 +1,6 @@
+@GZ_Test_HostAddress = http://localhost:8080
+
+GET {{GZ_Test_HostAddress}}/doctors/
+Accept: application/json
+
+###
