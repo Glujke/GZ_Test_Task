@@ -19,7 +19,12 @@ namespace GZ_Test_Repo.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<Patient>()
+            modelBuilder.Entity<Patient>()
+                 .HasOne(p => p.Gender)
+                 .WithMany()
+                 .HasForeignKey(p => p.GenderId);
+
+            modelBuilder.Entity<Patient>()
                 .HasOne(p => p.Area)
                 .WithMany()
                 .HasForeignKey(p => p.AreaId);

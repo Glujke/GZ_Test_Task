@@ -32,13 +32,13 @@
 
   <ItemGroup>
     <None Update="GZ_Test.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GZ_Test.db-shm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GZ_Test.db-wal">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GZ_Test.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
