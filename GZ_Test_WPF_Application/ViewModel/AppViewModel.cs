@@ -41,21 +41,12 @@ namespace GZ_Test_WPF_Application.ViewModel
                 IsEditButtonEnabled = selectedDoctor != null && selectedDoctor.Id != 0;
             }
         }
-
-
         public ObservableCollection<DoctorViewModel> Doctors { get; set; }
 
         public RelayCommand RemoveCommand { get; private set; }
         public RelayCommand AddCommand { get; private set; }
         public RelayCommand ApplyAddCommand { get; private set; }
         public RelayCommand ApplyChangesCommand { get; private set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
 
 
         public AppViewModel()
@@ -159,6 +150,13 @@ namespace GZ_Test_WPF_Application.ViewModel
             if (doctor.SpecializationId <= 0)  return "Незаполнено обязательное поле \"Специализация\""; 
             if (doctor.AreaId <= 0) return "Незаполнено обязательное поле \"Участок\""; 
             return "";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

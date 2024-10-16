@@ -1,4 +1,5 @@
-﻿<Window x:Class="GZ_Test_WPF_Application.MainWindow"
+﻿
+<Window x:Class="GZ_Test_WPF_Application.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,8 +30,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
-
-        <ListBox Grid.Column="0" ItemsSource="{Binding Doctors}"
+                <ListBox Grid.Column="0" ItemsSource="{Binding Doctors}"
                  SelectedItem="{Binding SelectedDoctor}" Grid.ColumnSpan="2" Margin="0,0,0,72" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -72,10 +72,10 @@
                        SelectedValue="{Binding Cabinet, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,0,0" Grid.Column="2">
-            <Button Command="{Binding ApplyAddCommand}" IsEnabled="{Binding IsAddButtonEnabled}"
+            <Button Command="{Binding ApplyAddCommand}" IsEnabled="{Binding SelectedDoctor.IsAddButtonEnabled}"
                     CommandParameter="{Binding SelectedDoctor}" Width="163">Добавить как нового</Button>
-            <Button Command="{Binding ApplyChangesCommand}" IsEnabled="{Binding IsEditButtonEnabled}"
+            <Button Command="{Binding ApplyChangesCommand}" IsEnabled="{Binding SelectedDoctor.IsEditButtonEnabled}"
                     CommandParameter="{Binding SelectedDoctor}" Width="163">Сохранить изменения</Button>
-        </StackPanel>
+                </StackPanel>
     </Grid>
 </Window>

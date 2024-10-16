@@ -13,9 +13,9 @@ namespace GZ_Test_WPF_Application.ViewModel
         private readonly Doctor _doctor;
         public Doctor Origin => _doctor;
 
-        public List<Specialization> Specializations { get; set; }
-        public List<Area> Areas { get; set; }
-        public List<Cabinet> Cabinets { get; set; }
+        public List<Specialization> _specializations { get; set; }
+        public List<Area> _areas { get; set; }
+        public List<Cabinet> _cabinets { get; set; }
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -32,13 +32,13 @@ namespace GZ_Test_WPF_Application.ViewModel
         public int CabinetId { get => _doctor.CabinetId; set { _doctor.CabinetId = value; OnPropertyChanged("CabinetId"); } }
         public int AreaId { get => _doctor.AreaId; set { _doctor.AreaId = value; OnPropertyChanged("AreaId"); } }
 
-        public Cabinet Cabinet { get => Cabinets.FirstOrDefault(c => c.Id == CabinetId);
+        public Cabinet Cabinet { get => _cabinets.FirstOrDefault(c => c.Id == CabinetId);
             set { _doctor.Cabinet = value; CabinetId = _doctor.Cabinet.Id; OnPropertyChanged("Cabinet"); } }
 
-        public Specialization Specialization { get => Specializations.FirstOrDefault( s => s.Id == SpecializationId); 
+        public Specialization Specialization { get => _specializations.FirstOrDefault( s => s.Id == SpecializationId); 
             set { _doctor.Specialization = value; SpecializationId = _doctor.Specialization.Id;  OnPropertyChanged("Specialization"); } }
 
-        public Area Area { get => Areas.FirstOrDefault(a => a.Id == AreaId);
+        public Area Area { get => _areas.FirstOrDefault(a => a.Id == AreaId);
             set { _doctor.Area = value; AreaId = _doctor.Area.Id; OnPropertyChanged("Area"); } }
 
 
@@ -46,9 +46,9 @@ namespace GZ_Test_WPF_Application.ViewModel
                                   List<Area> areas)
         {
             _doctor = doctor;
-            Specializations = specializations;
-            Cabinets = cabinets;
-            Areas = areas;
+            _specializations = specializations;
+            _cabinets = cabinets;
+            _areas = areas;
         }
     }
 }
