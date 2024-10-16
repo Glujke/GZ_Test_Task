@@ -24,39 +24,11 @@ namespace GZ_Test_WPF_Application
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string URL_API = "http://localhost:5000";
-
-        public ObservableCollection<Specialization> Specializations { get; set; }
-        public ObservableCollection<Area> Areas { get; set; }
-        public ObservableCollection<Cabinet> Cabinets { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-
-            using (var httpClient = new HttpApi<Specialization>(URL_API))
-            {
-                Specializations = httpClient.GetItems();
-                comboBoxSpecs.ItemsSource = Specializations;
-            }
-            using (var httpClient = new HttpApi<Area>(URL_API))
-            {
-                Areas = httpClient.GetItems();
-                comboBoxAreas.ItemsSource = Areas;
-            }
-            using (var httpClient = new HttpApi<Cabinet>(URL_API))
-            {
-                Cabinets = httpClient.GetItems();
-                comboBoxCabinet.ItemsSource = Cabinets;
-            }
-
             DataContext = new AppViewModel();
-        }
-
-        private void comboBoxSpecs_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var send = e.AddedItems[0] as Specialization;
-
         }
     }
 }

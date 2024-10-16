@@ -19,10 +19,18 @@ namespace GZ_Test_WPF_Application.ViewModel
     public class AppViewModel : INotifyPropertyChanged
     {
         private const string URL_API = "http://localhost:5000";
-        private Doctor selectedDoctor;
+        private List<Specialization> _specializations;
+        private List<Cabinet> _cabinets;
+        private List<Area> _areas;
 
-        public ObservableCollection<Doctor> Doctors { get; set; }
-        public Doctor SelectedDoctor
+        private bool isAddButtonEnabled;
+        public bool IsAddButtonEnabled { get => isAddButtonEnabled; private set { isAddButtonEnabled = value; OnPropertyChanged("IsAddButtonEnabled"); } }
+
+        private bool isEditButtonEnabled;
+        public bool IsEditButtonEnabled { get => isEditButtonEnabled; private set { isEditButtonEnabled = value; OnPropertyChanged("IsEditButtonEnabled"); } }
+
+        private DoctorViewModel selectedDoctor;
+        public DoctorViewModel SelectedDoctor
         {
             get { return selectedDoctor; }
             set
@@ -34,11 +42,8 @@ namespace GZ_Test_WPF_Application.ViewModel
             }
         }
 
-        private bool isAddButtonEnabled;
-        public bool IsAddButtonEnabled { get => isAddButtonEnabled; private set { isAddButtonEnabled = value; OnPropertyChanged("IsAddButtonEnabled"); } }
 
-        private bool isEditButtonEnabled;
-        public bool IsEditButtonEnabled { get => isEditButtonEnabled; private set { isEditButtonEnabled = value; OnPropertyChanged("IsEditButtonEnabled"); } }
+        public ObservableCollection<DoctorViewModel> Doctors { get; set; }
 
         public RelayCommand RemoveCommand { get; private set; }
         public RelayCommand AddCommand { get; private set; }
@@ -55,21 +60,43 @@ namespace GZ_Test_WPF_Application.ViewModel
 
         public AppViewModel()
         {
+            CreateDoctorViewModel();
+            CreateRelayCommand();
+        }
+        private void CreateDoctorViewModel()
+        {
+            using (var httpClient = new HttpApi<Specialization>(URL_API))
+            {
+                _specializations = httpClient.GetItems() as List<Specialization>;
+            }
+            using (var httpClient = new HttpApi<Area>(URL_API))
+            {
+                _areas = httpClient.GetItems() as List<Area>;
+            }
+            using (var httpClient = new HttpApi<Cabinet>(URL_API))
+            {
+                _cabinets = httpClient.GetItems() as List<Cabinet>;
+            }
             using (var httpClient = new HttpApi<Doctor>(URL_API))
             {
-                Doctors = httpClient.GetItems();
+                var doctors = httpClient.GetItems();
+                Doctors = new ObservableCollection<DoctorViewModel>();
+                foreach (var doctor in doctors) Doctors.Add(new DoctorViewModel(doctor, _specializations, _cabinets, _areas));
             }
+        }
+
+        private void CreateRelayCommand()
+        {
             ApplyChangesCommand = new RelayCommand(ApplyChangesDoctor);
             RemoveCommand = new RelayCommand(RemoveDoctor, (obj) => Doctors.Count > 0);
             AddCommand = new RelayCommand(AddNewDoctor);
             ApplyAddCommand = new RelayCommand(ApplyAddDoctor);
         }
-
         private void RemoveDoctor(Object obj)
         {
             try
             {
-                Doctor doctor = obj as Doctor;
+                DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
                 using (var httpClient = new HttpApi<Doctor>(URL_API))
@@ -88,15 +115,16 @@ namespace GZ_Test_WPF_Application.ViewModel
         {
             try
             {
-                Doctor doctor = obj as Doctor;
+                DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
                 using (var httpClient = new HttpApi<Doctor>(URL_API))
                 {
-                    var doc = httpClient.AddItem(doctor);
+                    var doc = httpClient.AddItem(doctor.Origin);
                     doctor.Id = doc.Id;
                 }
                 Doctors.Insert(0, doctor);
+                SelectedDoctor = doctor;
                 MessageBox.Show("Успешно добавлено.");
             }
             catch (Exception ex)
@@ -108,12 +136,12 @@ namespace GZ_Test_WPF_Application.ViewModel
         {
             try
             {
-                Doctor doctor = obj as Doctor;
+                DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
                 using (var httpClient = new HttpApi<Doctor>(URL_API))
                 {
-                    httpClient.UpdateItem(doctor.Id, doctor);
+                    httpClient.UpdateItem(doctor.Id, doctor.Origin);
                 }
                 MessageBox.Show("Успешно изменено.");
             }
@@ -125,19 +153,19 @@ namespace GZ_Test_WPF_Application.ViewModel
 
         private void AddNewDoctor(Object obj)
         {
-            Doctor doctor = new Doctor();
+            DoctorViewModel doctor = new DoctorViewModel(new Doctor(), _specializations, _cabinets, _areas);
             SelectedDoctor = doctor;
         }
 
-        private string CheckError(Doctor doctor)
+        private string CheckError(DoctorViewModel doctor)
         {
             if (doctor == null) return "Некорректный ввод данных.";
             if (doctor.Surname == null) return "Незаполнено обязательное поле \"Фамилия\"";
             if (doctor.Name == null) return "Незаполнено обязательное поле \"Имя\"";
             if (doctor.Father == null) return "Незаполнено обязательное поле \"Отчество\"";
-            if (doctor.Cabinet == null)  return "Незаполнено обязательное поле \"Кабинет\""; 
-            if (doctor.Specialization == null)  return "Незаполнено обязательное поле \"Специализация\""; 
-            if (doctor.Area == null) return "Незаполнено обязательное поле \"Участок\""; 
+            if (doctor.CabinetId <= 0)  return "Незаполнено обязательное поле \"Кабинет\""; 
+            if (doctor.SpecializationId <= 0)  return "Незаполнено обязательное поле \"Специализация\""; 
+            if (doctor.AreaId <= 0) return "Незаполнено обязательное поле \"Участок\""; 
             return "";
         }
     }

@@ -1,5 +1,7 @@
 ﻿using GZ_Test_WPF_Application.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
@@ -27,12 +29,12 @@ namespace GZ_Test_WPF_Application.Api
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public ObservableCollection<T> GetItems()
+        public IEnumerable<T> GetItems()
         {
             var response = httpClient.GetAsync(requestUrl).Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadFromJsonAsync<ObservableCollection<T>>().Result;
+                return response.Content.ReadFromJsonAsync<IEnumerable<T>>().Result;
             } else
             {
                 return null;

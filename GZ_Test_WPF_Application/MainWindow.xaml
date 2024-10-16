@@ -58,14 +58,17 @@
 
             <TextBlock Text="Специализация" />
             <ComboBox x:Name="comboBoxSpecs" DisplayMemberPath="Name"
-              SelectedItem="{Binding Specialization, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                      ItemsSource="{Binding Specializations}"
+                      SelectedValue="{Binding Specialization, Mode=TwoWay}">
             </ComboBox>
             <TextBlock Text="Участок" />
-            <ComboBox  x:Name="comboBoxAreas" DisplayMemberPath="Number" 
-              SelectedItem="{Binding Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <ComboBox  x:Name="comboBoxAreas" DisplayMemberPath="Number"
+                       ItemsSource="{Binding Areas}"
+                       SelectedValue="{Binding Area, Mode=TwoWay}"/>
             <TextBlock Text="Кабинет" />
-            <ComboBox  x:Name="comboBoxCabinet" DisplayMemberPath="Number" 
-              SelectedItem="{Binding Cabinet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <ComboBox  x:Name="comboBoxCabinet" DisplayMemberPath="Number"
+                       ItemsSource="{Binding Cabinets}"
+                       SelectedValue="{Binding Cabinet, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,0,0" Grid.Column="2">
             <Button Command="{Binding ApplyAddCommand}" IsEnabled="{Binding IsAddButtonEnabled}"
