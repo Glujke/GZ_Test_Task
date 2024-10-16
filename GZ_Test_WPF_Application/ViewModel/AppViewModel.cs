@@ -65,21 +65,13 @@ namespace GZ_Test_WPF_Application.ViewModel
         }
         private void CreateDoctorViewModel()
         {
-            using (var httpClient = new HttpApi<Specialization>(URL_API))
+            using (var httpClient = new HttpApi(URL_API))
             {
-                _specializations = httpClient.GetItems() as List<Specialization>;
-            }
-            using (var httpClient = new HttpApi<Area>(URL_API))
-            {
-                _areas = httpClient.GetItems() as List<Area>;
-            }
-            using (var httpClient = new HttpApi<Cabinet>(URL_API))
-            {
-                _cabinets = httpClient.GetItems() as List<Cabinet>;
-            }
-            using (var httpClient = new HttpApi<Doctor>(URL_API))
-            {
-                var doctors = httpClient.GetItems();
+                _specializations = httpClient.GetItems<Specialization>() as List<Specialization>;
+                _areas = httpClient.GetItems<Area>() as List<Area>;
+                _cabinets = httpClient.GetItems<Cabinet>() as List<Cabinet>;
+
+                var doctors = httpClient.GetItems<Doctor>();
                 Doctors = new ObservableCollection<DoctorViewModel>();
                 foreach (var doctor in doctors) Doctors.Add(new DoctorViewModel(doctor, _specializations, _cabinets, _areas));
             }
@@ -99,9 +91,9 @@ namespace GZ_Test_WPF_Application.ViewModel
                 DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
-                using (var httpClient = new HttpApi<Doctor>(URL_API))
+                using (var httpClient = new HttpApi(URL_API))
                 {
-                    httpClient.DeleteItem(doctor.Id);
+                    httpClient.DeleteItem<Doctor>(doctor.Id);
                 }
                 Doctors.Remove(doctor);
                 MessageBox.Show("Успешно удалено.");
@@ -118,9 +110,9 @@ namespace GZ_Test_WPF_Application.ViewModel
                 DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
-                using (var httpClient = new HttpApi<Doctor>(URL_API))
+                using (var httpClient = new HttpApi(URL_API))
                 {
-                    var doc = httpClient.AddItem(doctor.Origin);
+                    var doc = httpClient.AddItem<Doctor>(doctor.Origin);
                     doctor.Id = doc.Id;
                 }
                 Doctors.Insert(0, doctor);
@@ -139,9 +131,9 @@ namespace GZ_Test_WPF_Application.ViewModel
                 DoctorViewModel doctor = obj as DoctorViewModel;
                 var err = CheckError(doctor);
                 if (err != "") { MessageBox.Show(err); return; }
-                using (var httpClient = new HttpApi<Doctor>(URL_API))
+                using (var httpClient = new HttpApi(URL_API))
                 {
-                    httpClient.UpdateItem(doctor.Id, doctor.Origin);
+                    httpClient.UpdateItem<Doctor>(doctor.Id, doctor.Origin);
                 }
                 MessageBox.Show("Успешно изменено.");
             }
